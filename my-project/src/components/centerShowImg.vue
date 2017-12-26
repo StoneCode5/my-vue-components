@@ -6,8 +6,8 @@
     flex-wrap: wrap;
   }
   .imgItemBox{
-    width:25vw;
-    height:25vw;
+    width:50vw;
+    height:50vw;
     overflow: hidden;
   }
   /* 如果不考虑兼容性,可以直接使用object-fit:cover;来达到效果.*/
@@ -15,25 +15,32 @@
     width: 100%; height: 100%;    
     object-fit: cover;
   } */
+
 </style>
 <template>
   <div class="centerShowImg">
     <div class="imgBox">
-      <div class="imgItemBox" v-for="(item, index) in data" :key="index">
+      <div class="imgItemBox" v-for="(item, index) in data" :key="index" @click="lookDetail(item.url)">
         <img :src="item.url" alt="" class="imgItem" ref="imgList">
       </div>
     </div>
+    <imgPreview :visible.sync="isPreview" :imgUrl="imgDetailUrl"></imgPreview>
   </div>
 </template>
 
 <script>
+import imgPreview from './imgPreview'
 export default {
   data () {
     return {
       imgArr: [
-
-      ]
+      ],
+      isPreview: false,
+      imgDetailUrl: ''
     }
+  },
+  components: {
+    imgPreview
   },
   props: {
     data:{
@@ -55,25 +62,33 @@ export default {
   },
   methods: {
     updateImgPosition (v) {
-    let imgWidth = v.width
-    let imgHeight = v.height
-    let imgBoxWidth = window.innerWidth * 0.25 // window.innerWidth是可视窗口的宽度.
-    let imgBoxHeight = imgBoxWidth
-    if (imgWidth > imgHeight) {
-      v.style.height = '100%'
-      let heightRate = (imgBoxHeight / imgHeight)
-      let leftNum = ((imgWidth * heightRate) - imgBoxWidth) / 2
-      v.style.margin = `0 0 0 ${-leftNum}px`
-    } else if (imgWidth < imgHeight) {
-      v.style.width = '100%'
-      let widthRate = (imgBoxWidth / imgWidth)
-      let topNum = ((imgHeight * widthRate) - imgBoxHeight) / 2
-      v.style.margin = `${-topNum}px 0 0 0 `
-    } else if (imgWidth === imgHeight) {
-      v.style.width = '100%'
-      v.style.height = '100%'
+      let imgWidth = v.width
+      let imgHeight = v.height
+      let imgBoxWidth = window.innerWidth * 0.25 // window.innerWidth是可视窗口的宽度.
+      let imgBoxHeight = imgBoxWidth
+      if (imgWidth > imgHeight) {
+        v.style.height = '100%'
+        let heightRate = (imgBoxHeight / imgHeight)
+        let leftNum = ((imgWidth * heightRate) - imgBoxWidth) / 2
+        v.style.margin = `0 0 0 ${-leftNum}px`
+      } else if (imgWidth < imgHeight) {
+        v.style.width = '100%'
+        let widthRate = (imgBoxWidth / imgWidth)
+        let topNum = ((imgHeight * widthRate) - imgBoxHeight) / 2
+        v.style.margin = `${-topNum}px 0 0 0 `
+      } else if (imgWidth === imgHeight) {
+        v.style.width = '100%'
+        v.style.height = '100%'
+      }
+    },
+
+    lookDetail (imgUrl) {
+      console.log('clicked')
+      let height = window.innerHeight
+      document.body.style = `height: ${height}px; overflow-y: hidden;`
+      this.isPreview = true
+      this.imgDetailUrl  = imgUrl
     }
-  }
   }
 }
 </script>
