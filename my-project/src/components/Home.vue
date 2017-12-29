@@ -1,11 +1,13 @@
 <template>
   <div class="home">
-    <centerShowImg :data="imgData"></centerShowImg>
+    <!-- <centerShowImg :data="imgData"></centerShowImg> -->
+    <navbar></navbar>
   </div>
 </template>
 
 <script>
 import centerShowImg from './centerShowImg'
+import navbar from './navbar'
 export default {
   name: 'home',
   data () {
@@ -19,7 +21,8 @@ export default {
     }
   },
   components: {
-    centerShowImg
+    centerShowImg,
+    navbar
   }
 }
 </script>
